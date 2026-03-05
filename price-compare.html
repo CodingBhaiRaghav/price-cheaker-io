@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PriceRadar India</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0B0E1A;
+  --bg2:#111422;
+  --card:#161A2E;
+  --card2:#1C2138;
+  --border:#ffffff0f;
+  --border2:#ffffff18;
+  --coral:#FF6B6B;
+  --amber:#FFB347;
+  --teal:#4ECDC4;
+  --violet:#A78BFA;
+  --green:#34D399;
+  --red:#F87171;
+  --yellow:#FBBF24;
+  --text:#F1F5F9;
+  --sub:#94A3B8;
+  --dim:#475569;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── MESH BACKGROUND ── */
+.mesh{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 10%, rgba(255,107,107,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(167,139,250,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(78,205,196,0.06) 0%, transparent 70%);
+}
+.mesh-orb{
+  position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;
+  animation:orb-float 20s ease-in-out infinite;
+}
+.orb-a{width:500px;height:500px;background:rgba(255,107,107,0.08);top:-100px;left:-100px;animation-duration:18s}
+.orb-b{width:400px;height:400px;background:rgba(167,139,250,0.07);bottom:-80px;right:-60px;animation-duration:22s;animation-delay:-8s}
+.orb-c{width:280px;height:280px;background:rgba(78,205,196,0.07);top:40%;left:60%;animation-duration:15s;animation-delay:-5s}
+@keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,30px) scale(0.97)}}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ── HEADER ── */
+header{padding:60px 0 48px;text-align:center}
+.logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
+.logo-mark{
+  width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,var(--coral),var(--amber));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;
+  box-shadow:0 8px 32px rgba(255,107,107,0.35);
+  animation:logo-pop .7s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes logo-pop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.logo-text{font-family:'Poppins',sans-serif;font-size:1.6rem;font-weight:900;letter-spacing:-.02em}
+.logo-text span{background:linear-gradient(135deg,var(--coral),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+h1{
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(2.6rem,7vw,5rem);
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1;
+  margin-bottom:16px;
+}
+h1 .line1{display:block;color:var(--text)}
+h1 .line2{
+  display:block;
+  background:linear-gradient(135deg,var(--coral) 0%,var(--amber) 50%,var(--teal) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.sub-tag{
+  color:var(--sub);font-size:.97rem;font-weight:500;
+  max-width:480px;margin:0 auto;line-height:1.65;
+}
+
+/* ── PILL BADGES ── */
+.badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0 0}
+.badge{
+  font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 12px;border-radius:100px;border:1px solid var(--border2);
+  color:var(--sub);background:var(--card);
+}
+.badge.live{border-color:rgba(52,211,153,.3);color:var(--green)}
+.badge.live::before{content:'●';margin-right:5px;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ── SEARCH ── */
+.search-wrap{max-width:700px;margin:44px auto 0}
+.search-card{
+  background:var(--card);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:6px;
+  display:flex;
+  gap:0;
+  box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.04);
+  transition:box-shadow .3s,border-color .3s;
+}
+.search-card:focus-within{
+  border-color:rgba(255,107,107,.4);
+  box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 3px rgba(255,107,107,.1);
+}
+.sf{flex:1;display:flex;flex-direction:column;padding:12px 16px 10px}
+.sl{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+input{
+  background:transparent;border:none;outline:none;
+  color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:1rem;font-weight:600;
+  width:100%;
+}
+input::placeholder{color:#334155;font-weight:500}
+.sdiv{width:1px;background:var(--border2);margin:10px 0;flex-shrink:0}
+.go{
+  background:linear-gradient(135deg,var(--coral),var(--amber));
+  border:none;border-radius:14px;
+  padding:0 22px;
+  cursor:pointer;flex-shrink:0;align-self:stretch;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:.9rem;
+  color:#fff;letter-spacing:.02em;
+  display:flex;align-items:center;gap:8px;
+  transition:all .2s;
+  box-shadow:0 4px 20px rgba(255,107,107,.3);
+  white-space:nowrap;
+}
+.go:hover:not(:disabled){transform:translateY(-1px) scale(1.02);box-shadow:0 8px 28px rgba(255,107,107,.45)}
+.go:disabled{opacity:.4;cursor:not-allowed;transform:none}
+@media(max-width:560px){
+  .search-card{flex-direction:column;gap:4px;padding:12px}
+  .sdiv{width:100%;height:1px;margin:4px 0}
+  .go{height:46px;border-radius:12px;justify-content:center}
+}
+
+/* ── LOADING ── */
+.loading{display:none;padding:60px 0;text-align:center}
+.loading.on{display:block}
+.load-ring{
+  width:52px;height:52px;margin:0 auto 20px;
+  border-radius:50%;
+  border:3px solid var(--border2);
+  border-top-color:var(--coral);
+  border-right-color:var(--amber);
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;margin-bottom:6px}
+.load-sub{color:var(--sub);font-size:.82rem;margin-bottom:20px}
+.load-chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.lchip{
+  font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:100px;
+  border:1px solid var(--border2);color:var(--dim);
+  animation:chip-pulse 1.8s ease-in-out infinite;
+}
+.lchip:nth-child(2){animation-delay:.25s}
+.lchip:nth-child(3){animation-delay:.5s}
+.lchip:nth-child(4){animation-delay:.75s}
+.lchip:nth-child(5){animation-delay:1s}
+.lchip:nth-child(6){animation-delay:1.25s}
+@keyframes chip-pulse{0%,100%{opacity:.2;border-color:var(--border)}50%{opacity:1;border-color:var(--coral);color:var(--text)}}
+
+/* ── WEB SEARCH NOTICE ── */
+.ws-notice{
+  display:none;
+  background:rgba(52,211,153,.06);
+  border:1px solid rgba(52,211,153,.2);
+  border-radius:10px;padding:10px 16px;
+  font-size:.78rem;color:var(--green);
+  text-align:center;max-width:700px;margin:12px auto 0;
+}
+.ws-notice.on{display:block}
+
+/* ── ERROR ── */
+.err-box{
+  display:none;background:rgba(248,113,113,.07);
+  border:1px solid rgba(248,113,113,.2);border-radius:12px;
+  padding:14px 20px;color:var(--red);text-align:center;
+  font-size:.87rem;max-width:700px;margin:16px auto 0;
+}
+.err-box.on{display:block}
+
+/* ── RESULTS ── */
+.results{display:none;padding:48px 0 24px}
+.results.on{display:block;animation:rise .45s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESULT HEADER */
+.rhead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.rhead-left{}
+.r-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:6px}
+.r-title{font-family:'Poppins',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.r-title span{color:var(--amber)}
+.r-meta{font-size:.78rem;color:var(--sub);margin-top:5px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.r-meta-pill{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:100px;padding:2px 10px;font-size:.7rem;font-weight:700;
+}
+.rhead-note{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:12px;padding:10px 14px;
+  font-size:.72rem;color:var(--sub);max-width:260px;line-height:1.6;text-align:right;
+}
+.rhead-note strong{color:var(--amber);display:block;margin-bottom:2px;font-size:.75rem}
+
+/* BEST DEAL BANNER */
+.best-banner{
+  background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,179,71,.07));
+  border:1px solid rgba(255,107,107,.25);
+  border-radius:16px;
+  padding:18px 22px;margin-bottom:22px;
+  display:flex;align-items:center;gap:16px;
+  position:relative;overflow:hidden;
+}
+.best-banner::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,107,107,.04) 50%,transparent 100%);
+  animation:sweep 4s ease-in-out infinite;
+}
+@keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.bb-icon{font-size:2rem;flex-shrink:0}
+.bb-content{flex:1}
+.bb-label{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:4px}
+.bb-text{font-family:'Poppins',sans-serif;font-weight:700;font-size:.97rem;line-height:1.4}
+.bb-why{font-size:.73rem;color:var(--sub);margin-top:3px}
+.bb-btn{flex-shrink:0}
+.bb-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:10px;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:.8rem;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.bb-link:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:28px}
+
+.pcard{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+  animation:card-in .5s ease both;
+  position:relative;
+}
+.pcard:hover:not(.pcard--dim){
+  transform:translateY(-4px);
+  box-shadow:0 20px 48px rgba(0,0,0,.35);
+  border-color:var(--border2);
+}
+@keyframes card-in{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.pcard--best{border-color:rgba(255,107,107,.35)!important;box-shadow:0 0 0 1px rgba(255,107,107,.12) inset}
+.pcard--dim{opacity:.35;filter:grayscale(.5)}
+
+.pc-stripe{height:3px;width:100%}
+
+.pc-body{padding:18px 18px 16px}
+
+.pc-head{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.pc-logo{
+  width:42px;height:42px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;flex-shrink:0;
+}
+.pc-info{flex:1}
+.pc-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:.92rem;line-height:1.1}
+.pc-type{font-size:.67rem;color:var(--sub);font-weight:600;margin-top:1px}
+.pc-badge{
+  background:linear-gradient(135deg,var(--coral),var(--amber));
+  color:#fff;font-size:8px;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;white-space:nowrap;
+}
+
+.pc-divider{height:1px;background:var(--border);margin-bottom:13px}
+
+/* PRICE */
+.pc-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.pc-price{font-family:'Poppins',sans-serif;font-size:2.1rem;font-weight:900;letter-spacing:-.03em;line-height:1}
+.pc-mrp{font-size:.78rem;color:var(--dim);text-decoration:line-through}
+.pc-disc{
+  font-size:.72rem;font-weight:800;color:var(--green);
+  background:rgba(52,211,153,.1);padding:1px 7px;border-radius:100px;
+}
+.pc-no-price{color:var(--dim);font-size:.9rem;font-weight:600;margin-bottom:13px}
+
+/* VALUE SCORE */
+.vs-wrap{margin:10px 0 12px}
+.vs-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.vs-label{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.vs-val{font-family:'Poppins',sans-serif;font-weight:900;font-size:.95rem}
+.vs-track{height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.vs-fill{height:100%;border-radius:100px;transition:width 1.3s cubic-bezier(.22,1,.36,1);width:0%}
+.vs-tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.vs-tag{font-size:.67rem;font-weight:800;padding:2px 8px;border-radius:100px}
+.vt-fast{background:rgba(78,205,196,.12);color:var(--teal)}
+.vt-cheap{background:rgba(251,191,36,.12);color:var(--yellow)}
+.vt-best{background:rgba(255,107,107,.12);color:var(--coral)}
+
+/* INFO ROWS */
+.pc-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+.pc-row{display:flex;align-items:center;justify-content:space-between;font-size:.79rem}
+.pc-rl{color:var(--sub)}
+.pc-rv{font-weight:700;font-size:.8rem}
+
+/* STATUS PILLS */
+.spill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:100px;font-size:.7rem;font-weight:800}
+.sp-in{background:rgba(52,211,153,.12);color:var(--green)}
+.sp-lim{background:rgba(251,191,36,.12);color:var(--yellow)}
+.sp-out{background:rgba(248,113,113,.12);color:var(--red)}
+.sp-no{background:rgba(148,163,184,.1);color:var(--dim)}
+.pc-reason{font-size:.67rem;color:var(--dim);font-style:italic;margin-top:2px}
+
+/* ACTION BUTTON */
+.pc-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:11px;border-radius:10px;
+  font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:800;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .18s;letter-spacing:.01em;
+}
+.pc-btn.active:hover{filter:brightness(1.1);transform:scale(1.01)}
+.pc-btn.inactive{
+  background:var(--card2);color:var(--dim);
+  cursor:not-allowed;pointer-events:none;font-weight:700;
+}
+
+/* SAVINGS SECTION */
+.save-sec{background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:22px 24px;margin-bottom:30px}
+.save-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.save-icon-wrap{width:36px;height:36px;background:rgba(251,191,36,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.save-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.1rem}
+.save-title span{color:var(--amber)}
+.save-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.save-card{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:12px;padding:14px 15px;
+  display:flex;gap:12px;align-items:flex-start;
+  transition:border-color .2s;
+}
+.save-card:hover{border-color:var(--border2)}
+.save-emoji{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+.save-name{font-weight:800;font-size:.79rem;margin-bottom:3px;color:var(--text)}
+.save-desc{font-size:.71rem;color:var(--sub);line-height:1.55}
+.save-amount{
+  display:inline-block;font-size:.68rem;font-weight:800;
+  color:var(--green);background:rgba(52,211,153,.1);
+  padding:2px 8px;border-radius:100px;margin-top:5px;
+}
+
+/* DISCLAIMER */
+.disc{text-align:center;padding:8px 0 52px;font-size:.7rem;color:var(--dim);line-height:1.9}
+.disc a{color:var(--sub);text-decoration:none}.disc a:hover{color:var(--text)}
+.disc strong{color:var(--amber)}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+<div class="mesh-orb orb-a"></div>
+<div class="mesh-orb orb-b"></div>
+<div class="mesh-orb orb-c"></div>
+
+<div class="page">
+  <header>
+    <div class="logo">
+      <div class="logo-mark">⚡</div>
+      <div class="logo-text">Price<span>Radar</span></div>
+    </div>
+    <h1>
+      <span class="line1">Compare Prices</span>
+      <span class="line2">Across Every Platform</span>
+    </h1>
+    <p class="sub-tag">Real web-searched prices across Blinkit, Zepto, Instamart, Amazon & Flipkart — with delivery time, value score and savings tips.</p>
+    <div class="badges">
+      <span class="badge live">Web Search Enabled</span>
+      <span class="badge">Value Score</span>
+      <span class="badge">City-Accurate</span>
+      <span class="badge">No Ghost Prices</span>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-card">
+      <div class="sf">
+        <div class="sl">📍 Your City</div>
+        <input id="cityIn" placeholder="Mumbai, Delhi, Saharanpur…" autocomplete="off"/>
+      </div>
+      <div class="sdiv"></div>
+      <div class="sf">
+        <div class="sl">🛒 Exact Product</div>
+        <input id="prodIn" placeholder="Amul Butter 500g · boAt Airdopes 141…" autocomplete="off"/>
+      </div>
+      <button class="go" id="goBtn" onclick="run()">Search ↗</button>
+    </div>
+  </div>
+
+  <div class="ws-notice" id="wsNotice">🔍 AI is searching the web for real-time prices…</div>
+  <div class="loading" id="loading">
+    <div class="load-ring"></div>
+    <div class="load-title">Fetching live data…</div>
+    <div class="load-sub">Using web search to find actual prices on each platform</div>
+    <div class="load-chips" id="lchips"></div>
+  </div>
+  <div class="err-box" id="errBox"></div>
+
+  <div class="results" id="results">
+    <div class="rhead">
+      <div class="rhead-left">
+        <div class="r-eyebrow">Search Results</div>
+        <div class="r-title">Comparing <span id="rProd"></span></div>
+        <div class="r-meta">
+          <span id="rCity"></span>
+          <span class="r-meta-pill" id="rCat"></span>
+        </div>
+      </div>
+      <div class="rhead-note">
+        <strong>⚠ Verify Before Buying</strong>
+        AI searched for current prices. Always tap <em>View on Platform</em> to confirm before purchase.
+      </div>
+    </div>
+
+    <div class="best-banner" id="bestBanner" style="display:none">
+      <div class="bb-icon">🏆</div>
+      <div class="bb-content">
+        <div class="bb-label">Best Overall Value</div>
+        <div class="bb-text" id="bbText"></div>
+        <div class="bb-why" id="bbWhy"></div>
+      </div>
+      <div class="bb-btn">
+        <a id="bbLink" class="bb-link" href="#" target="_blank" rel="noopener">Shop Now ↗</a>
+      </div>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <div class="save-sec" id="saveSec" style="display:none">
+      <div class="save-head">
+        <div class="save-icon-wrap">💡</div>
+        <div class="save-title">Ways to <span>Save More</span></div>
+      </div>
+      <div class="save-grid" id="saveGrid"></div>
+    </div>
+  </div>
+
+  <div class="disc">
+    <strong>⚠ AI-searched estimates</strong> — prices may differ. Always verify on platform before purchasing.<br/>
+    <a href="https://blinkit.com" target="_blank">Blinkit</a> ·
+    <a href="https://www.swiggy.com/instamart" target="_blank">Instamart</a> ·
+    <a href="https://www.zeptonow.com" target="_blank">Zepto</a> ·
+    <a href="https://www.amazon.in" target="_blank">Amazon</a> ·
+    <a href="https://www.flipkart.com" target="_blank">Flipkart</a> ·
+    <a href="https://www.myntra.com" target="_blank">Myntra</a>
+  </div>
+</div>
+
+<script>
+// ─── Platform definitions ─────────────────────────────────────────────────────
+const PLAT = {
+  blinkit:   {name:'Blinkit',   c:'#F8C300', bg:'rgba(248,195,0,.13)',   type:'Quick Commerce · 10-20 min', emoji:'⚡', url:q=>`https://blinkit.com/s/?q=${E(q)}`},
+  instamart: {name:'Instamart', c:'#FF6B00', bg:'rgba(255,107,0,.13)',   type:'Quick Commerce · 15-25 min', emoji:'🛒', url:q=>`https://www.swiggy.com/instamart/search?query=${E(q)}`},
+  zepto:     {name:'Zepto',     c:'#8B5CF6', bg:'rgba(139,92,246,.13)',  type:'Quick Commerce · 10-20 min', emoji:'🚀', url:q=>`https://www.zeptonow.com/search?query=${E(q)}`},
+  amazon:    {name:'Amazon',    c:'#FF9900', bg:'rgba(255,153,0,.13)',   type:'E-Commerce',                emoji:'📦', url:q=>`https://www.amazon.in/s?k=${E(q)}&ref=nb_sb_noss`},
+  flipkart:  {name:'Flipkart',  c:'#2874F0', bg:'rgba(40,116,240,.13)', type:'E-Commerce',                emoji:'🛍️', url:q=>`https://www.flipkart.com/search?q=${E(q)}`},
+  myntra:    {name:'Myntra',    c:'#FF3E6C', bg:'rgba(255,62,108,.13)', type:'Fashion',                   emoji:'👗', url:q=>`https://www.myntra.com/search?rawQuery=${E(q)}`},
+};
+
+// ─── City coverage (client-enforced) ─────────────────────────────────────────
+const CITIES = {
+  blinkit:[
+    'delhi','new delhi','noida','gurgaon','gurugram','faridabad','ghaziabad',
+    'mumbai','thane','navi mumbai','pune','bengaluru','bangalore','hyderabad',
+    'chennai','kolkata','ahmedabad','jaipur','lucknow','chandigarh','indore',
+    'bhopal','patna','agra','meerut','surat','vadodara','rajkot','coimbatore',
+    'kochi','nagpur','visakhapatnam','bhubaneswar','ludhiana','amritsar',
+    'dehradun','ranchi','raipur','mysuru','mysore','mangaluru','tirupati',
+    'vijayawada','madurai','trichy','nashik','aurangabad','saharanpur',
+    'moradabad','bareilly','aligarh','muzaffarnagar','gorakhpur','varanasi',
+    'kanpur','prayagraj','allahabad','jodhpur','udaipur','kota'
+  ],
+  instamart:[
+    'delhi','new delhi','noida','gurgaon','gurugram','faridabad','ghaziabad',
+    'mumbai','thane','navi mumbai','pune','bengaluru','bangalore','hyderabad',
+    'chennai','kolkata','ahmedabad','jaipur','lucknow','chandigarh','indore',
+    'bhopal','agra','meerut','surat','vadodara','coimbatore','kochi','nagpur',
+    'bhubaneswar','ludhiana','dehradun','raipur','mysuru','nashik',
+    'saharanpur','moradabad','bareilly','aligarh','muzaffarnagar',
+    'gorakhpur','varanasi','kanpur','prayagraj','allahabad'
+  ],
+  zepto:[
+    'delhi','new delhi','noida','gurgaon','gurugram','faridabad','ghaziabad',
+    'mumbai','thane','navi mumbai','pune','bengaluru','bangalore','hyderabad',
+    'chennai','kolkata','ahmedabad','jaipur','lucknow','chandigarh','indore',
+    'bhopal','coimbatore','kochi','nagpur','surat','vadodara','mysuru','nashik'
+    // Zepto does NOT cover: saharanpur, meerut, agra, moradabad, bareilly,
+    // aligarh, dehradun, patna, ranchi, gorakhpur, varanasi, kanpur etc.
+  ],
+  myntra:['all'],
+  amazon:['all'],
+  flipkart:['all'],
+};
+
+function servedBy(id, city) {
+  const list = CITIES[id];
+  if (!list) return true;
+  if (list[0] === 'all') return true;
+  const c = city.toLowerCase().trim();
+  return list.some(x => c === x || c.includes(x) || x.includes(c));
+}
+
+// ─── Product category ─────────────────────────────────────────────────────────
+const FOOD_KW = [
+  'chips','kurkure','lays','doritos','bingo','nachos','popcorn','namkeen','bhujia','murukku',
+  'chocolate','cadbury','dairy milk','kitkat','5 star','munch','perk','snickers','milkybar',
+  'gems','eclairs','candy','toffee','oreo','biscuit','cookie','parle','bourbon','marie',
+  'digestive','good day','britannia','sunfeast','pepsi','coca-cola','coke','sprite','fanta',
+  'thums up','7up','mountain dew','juice','lassi','chaas','buttermilk','milk','tea','coffee',
+  'nescafe','bru','tata tea','red bull','monster','sting','butter','ghee','paneer','curd',
+  'yogurt','amul','cheese','cream','atta','flour','rice','dal','lentil','oil','sugar','salt',
+  'maida','besan','poha','oats','muesli','cornflakes','pasta','noodles','maggi','yippee',
+  'sauce','ketchup','pickle','jam','honey','peanut butter','bread','cake','rusk','papad',
+  'ice cream','kulfi','snack','food','drink','beverage','grocery','packet','instant'
+];
+const FASHION_KW = [
+  'shirt','tshirt','t-shirt','jeans','dress','kurta','saree','lehenga','suit','jacket',
+  'shoes','sneakers','sandals','heels','top','trouser','pant','skirt','blouse','shorts',
+  'hoodie','sweatshirt','coat','blazer','kurti','salwar','dupatta','leggings','sportswear',
+  'fashion','apparel','clothing','wear','lingerie','bra','underwear','socks','cap','hat',
+  'scarf','handbag','purse','belt','sunglasses'
+];
+
+const E = s => encodeURIComponent(s);
+const lc = s => s.toLowerCase();
+const isFood = p => FOOD_KW.some(k => lc(p).includes(k));
+const isFash = p => FASHION_KW.some(k => lc(p).includes(k));
+function platforms(p) {
+  if (isFood(p)) return ['blinkit','instamart','zepto'];
+  if (isFash(p)) return ['blinkit','instamart','zepto','amazon','flipkart','myntra'];
+  return ['blinkit','instamart','zepto','amazon','flipkart'];
+}
+
+// ─── Delivery fee (calculated from item price) ────────────────────────────────
+function calcDeliveryFee(platId, itemPrice) {
+  if (itemPrice == null) return null;
+  const thresholds = {
+    blinkit:{free:199,fee:25}, instamart:{free:149,fee:30},
+    zepto:{free:149,fee:25}, amazon:{free:499,fee:49},
+    flipkart:{free:500,fee:40}, myntra:{free:799,fee:49}
+  };
+  const t = thresholds[platId];
+  if (!t) return 0;
+  return itemPrice >= t.free ? 0 : t.fee;
+}
+
+const fmtT = m => {
+  if (!m || m<=0) return '—';
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m/60);
+  if (h >= 48) return `~${Math.floor(h/24)} days`;
+  if (h >= 24) return '1-2 days';
+  return `${h}h`;
+};
+const darkText = c => ['#F8C300','#FF9900','#FBBF24'].includes(c);
+
+// ─── Client sanitizer ─────────────────────────────────────────────────────────
+function sanitize(platforms, city) {
+  platforms.forEach(p => {
+    // Hard city override
+    if (!servedBy(p.id, city)) p.available = false;
+
+    // Recalculate delivery fee from item price (overrides AI)
+    if (p.available && p.exactMatch && p.price != null) {
+      p.deliveryFee = calcDeliveryFee(p.id, p.price);
+    }
+
+    // Wipe data for unavailable items
+    if (!p.available || !p.exactMatch) {
+      p.price = null; p.mrp = null;
+      p.deliveryMinutes = null; p.deliveryFee = null; p.note = '';
+    }
+
+    // MRP sanity
+    if (p.price != null && p.mrp != null && p.mrp < p.price) p.mrp = p.price;
+
+    // Stock status normalise
+    if (!p.available) p.stock = 'not_in_city';
+    else if (!p.exactMatch && p.stock !== 'out_of_stock') p.stock = 'not_listed';
+  });
+}
+
+// ─── Value score ──────────────────────────────────────────────────────────────
+function calcScores(platforms) {
+  const elig = platforms.filter(p =>
+    p.available && p.exactMatch && p.price != null &&
+    !['out_of_stock','not_listed','not_in_city'].includes(p.stock)
+  );
+  const scores = {};
+  if (!elig.length) return scores;
+  if (elig.length === 1) { scores[elig[0].id] = 72; return scores; }
+
+  const costs  = elig.map(p => p.price + (p.deliveryFee||0));
+  const speeds = elig.map(p => p.deliveryMinutes || 5760);
+  const minC=Math.min(...costs), maxC=Math.max(...costs);
+  const minS=Math.min(...speeds), maxS=Math.max(...speeds);
+  elig.forEach(p => {
+    const c = p.price + (p.deliveryFee||0), s = p.deliveryMinutes||5760;
+    const ps = maxC===minC ? 1 : (maxC-c)/(maxC-minC);
+    const ss = maxS===minS ? 1 : (maxS-s)/(maxS-minS);
+    scores[p.id] = Math.round((ps*.6 + ss*.4)*100);
+  });
+  return scores;
+}
+const scColor = s => s>=72 ? 'var(--green)' : s>=45 ? 'var(--yellow)' : 'var(--sub)';
+
+// ─── Main search ──────────────────────────────────────────────────────────────
+async function run() {
+  const city = (document.getElementById('cityIn').value||'').trim();
+  const prod = (document.getElementById('prodIn').value||'').trim();
+  if (!city||!prod) { showErr('Please enter both a city and a product name.'); return; }
+
+  ['results','errBox'].forEach(id => document.getElementById(id).classList.remove('on'));
+  document.getElementById('loading').classList.add('on');
+  document.getElementById('wsNotice').classList.add('on');
+  document.getElementById('goBtn').disabled = true;
+
+  const active = platforms(prod);
+  document.getElementById('lchips').innerHTML = active.map(id=>`<span class="lchip">${PLAT[id].emoji} ${PLAT[id].name}</span>`).join('');
+
+  const foodNote = isFood(prod) ? 'This is a food/grocery/snack item. Only quick-commerce platforms are relevant.' : '';
+  const fashNote = isFash(prod) ? 'This is a fashion/apparel item. Include Myntra.' : 'Do NOT include Myntra unless product is clothing/fashion.';
+
+  const prompt = `You are a precise Indian e-commerce price analyst with web search capability.
+
+TASK: Find the EXACT current price of "${prod}" in ${city} on these platforms: ${active.join(', ')}.
+
+${foodNote} ${fashNote}
+
+USE WEB SEARCH to find actual current prices. Search for:
+- "${prod} price blinkit"
+- "${prod} price zepto"  
+- "${prod} price instamart swiggy"
+- "${prod} price amazon india"
+- "${prod} price flipkart"
+Use the search results to give accurate prices. If you cannot find a price via search, use your best knowledge of Indian market prices — but clearly reflect uncertainty.
+
+STRICT RULES:
+1. EXACT PRODUCT: Only price this specific product (same brand + variant + size). If different sizes exist, show the closest matching one.
+2. NULL WHEN UNAVAILABLE: If platform doesn't cover ${city} OR doesn't stock this exact product → price:null, mrp:null, exactMatch:false. NEVER show a price for unavailable items.
+3. CITY TRUTH: Blinkit/Instamart serve most Tier-2 Indian cities including Saharanpur. Zepto serves mainly metros + larger cities (Delhi, Mumbai, Pune, Bengaluru, Hyderabad, Chennai, Kolkata, Ahmedabad, Jaipur, Lucknow, Chandigarh, Indore, Bhopal, Coimbatore, Kochi, Nagpur, Surat, Vadodara, Mysuru, Nashik only). Amazon & Flipkart are pan-India.
+4. DELIVERY FEE: Do NOT compute this — set deliveryFee to null. The app will calculate it.
+5. HONEST STOCK: If a common FMCG product is searched and the platform covers the city, it is almost certainly in_stock. Only use out_of_stock if you have strong reason.
+6. PRICES should reflect actual current selling price, not MRP (unless sold at MRP). Use web search results first.
+
+Return ONLY a raw JSON object (no markdown, no extra text):
+{
+  "product": "Exact product name as appears on platform (Brand + Name + Size)",
+  "category": "grocery|electronics|fashion|personalcare|appliance|other",
+  "searchedPrices": true,
+  "platforms": [
+    {
+      "id": "blinkit",
+      "available": true,
+      "exactMatch": true,
+      "price": 285,
+      "mrp": 290,
+      "deliveryMinutes": 14,
+      "deliveryFee": null,
+      "stock": "in_stock",
+      "priceSource": "web_search",
+      "note": "Fastest delivery"
+    }
+  ],
+  "savingTips": [
+    {"icon":"🔁","label":"Subscribe & Save","desc":"Amazon Subscribe & Save offers 5-15% on regular FMCG orders.","saving":"Up to 15% off"}
+  ]
+}
+
+Platform IDs exactly: ${active.join(', ')}
+savingTips: 3-4 tips. NO bank/card/UPI offers. Focus on: bulk packs, subscriptions, loyalty programs, seasonal sales, referral programs, app-only prices, combo deals.
+RETURN ONLY THE JSON OBJECT.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        tools:[{"type":"web_search_20250305","name":"web_search"}],
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if (!res.ok) throw new Error('API '+res.status);
+    const data = await res.json();
+
+    // Extract text from potentially multi-block response (may include tool_use blocks)
+    const textBlocks = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    const m = textBlocks.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('No JSON in response');
+    const parsed = JSON.parse(m[0]);
+
+    // Sanitize: enforce city, recalculate delivery fees, null out bad prices
+    sanitize(parsed.platforms||[], city);
+    render(parsed, city, prod);
+  } catch(err) {
+    showErr('Something went wrong. Please try again with the full product name (Brand + Size).');
+    console.error(err);
+  } finally {
+    document.getElementById('loading').classList.remove('on');
+    document.getElementById('wsNotice').classList.remove('on');
+    document.getElementById('goBtn').disabled = false;
+  }
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+function render(data, city, origProd) {
+  const prodName = data.product || origProd;
+  document.getElementById('rProd').textContent = prodName;
+  document.getElementById('rCity').textContent = `📍 ${city}`;
+  document.getElementById('rCat').textContent = (data.category||'').replace(/\b\w/g,c=>c.toUpperCase());
+
+  const plats  = data.platforms || [];
+  const scores = calcScores(plats);
+  const elig   = plats.filter(p =>
+    p.available && p.exactMatch && p.price != null &&
+    !['out_of_stock','not_listed','not_in_city'].includes(p.stock)
+  );
+  const best = elig.length
+    ? elig.reduce((a,b) => (scores[a.id]||0) >= (scores[b.id]||0) ? a : b)
+    : null;
+
+  // Best banner
+  const banner = document.getElementById('bestBanner');
+  if (best && PLAT[best.id]) {
+    const pi = PLAT[best.id];
+    const sc = scores[best.id]||0;
+    const myC = best.price+(best.deliveryFee||0);
+    const cheapest = elig.length>1 && elig.every(p=>myC<=p.price+(p.deliveryFee||0));
+    const fastest  = elig.length>1 && elig.every(p=>(best.deliveryMinutes||9999)<=(p.deliveryMinutes||9999));
+    const why = cheapest&&fastest?'Cheapest + Fastest':cheapest?'Lowest Total Cost':fastest?'Fastest Delivery':'Best Price-Speed Balance';
+    document.getElementById('bbText').textContent = `${pi.name} · ₹${best.price}${best.deliveryFee>0?` (+₹${best.deliveryFee} delivery)`:' (Free delivery)'} · ${fmtT(best.deliveryMinutes)}`;
+    document.getElementById('bbWhy').textContent = `Value Score ${sc}/100 · ${why}`;
+    const bl = document.getElementById('bbLink');
+    bl.href = pi.url(prodName);
+    bl.style.background = `linear-gradient(135deg,${pi.c},${pi.c}cc)`;
+    bl.style.color = darkText(pi.c)?'#000':'#fff';
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+
+  // Sort: eligible desc score, then unavailable
+  const sorted = [...plats].sort((a,b) =>
+    ((scores[b.id]!==undefined?scores[b.id]:-1)) - ((scores[a.id]!==undefined?scores[a.id]:-1))
+  );
+
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+
+  sorted.forEach((p, i) => {
+    const pi = PLAT[p.id];
+    if (!pi) return;
+
+    const isBest  = best && p.id === best.id;
+    const canLink = p.available && p.exactMatch && p.price!=null &&
+                    !['out_of_stock','not_listed','not_in_city'].includes(p.stock);
+    const sc      = scores[p.id]; // undefined if not eligible
+    const hasScore = sc !== undefined;
+    const disc    = (canLink && p.mrp && p.mrp>p.price) ? Math.round(((p.mrp-p.price)/p.mrp)*100) : 0;
+
+    // Status
+    let spill = '', reason = '';
+    if (!p.available || p.stock==='not_in_city') {
+      spill = `<span class="spill sp-no">✕ Not in ${city}</span>`;
+      reason = `${pi.name} doesn't deliver to ${city}`;
+    } else if (!p.exactMatch || p.stock==='not_listed') {
+      spill = `<span class="spill sp-out">✕ Not Listed</span>`;
+      reason = `Exact product not stocked on ${pi.name}`;
+    } else if (p.stock==='out_of_stock') {
+      spill = `<span class="spill sp-out">✕ Out of Stock</span>`;
+      reason = 'Currently unavailable';
+    } else if (p.stock==='limited') {
+      spill = `<span class="spill sp-lim">⚠ Limited Stock</span>`;
+    } else {
+      spill = `<span class="spill sp-in">✓ In Stock</span>`;
+    }
+
+    // Tags
+    const tags = [];
+    if (hasScore && elig.length>1) {
+      const myC = p.price+(p.deliveryFee||0);
+      if (elig.every(x=>myC<=x.price+(x.deliveryFee||0))) tags.push(`<span class="vs-tag vt-cheap">💰 Cheapest</span>`);
+      if (elig.every(x=>(p.deliveryMinutes||9999)<=(x.deliveryMinutes||9999))) tags.push(`<span class="vs-tag vt-fast">⚡ Fastest</span>`);
+      if (isBest&&!tags.length) tags.push(`<span class="vs-tag vt-best">🏆 Best Value</span>`);
+    }
+
+    const card = document.createElement('div');
+    card.className = `pcard${isBest?' pcard--best':''}${!canLink?' pcard--dim':''}`;
+    card.style.animationDelay = `${i*0.07}s`;
+    const tc = darkText(pi.c)?'#000':'#fff';
+
+    card.innerHTML = `
+      <div class="pc-stripe" style="background:${canLink?`linear-gradient(90deg,${pi.c},${pi.c}88)`:'#1e2235'}"></div>
+      <div class="pc-body">
+        <div class="pc-head">
+          <div class="pc-logo" style="background:${pi.bg};color:${pi.c}">${pi.emoji}</div>
+          <div class="pc-info">
+            <div class="pc-name">${pi.name}</div>
+            <div class="pc-type">${pi.type}</div>
+          </div>
+          ${isBest?'<div class="pc-badge">BEST VALUE</div>':''}
+        </div>
+        <div class="pc-divider"></div>
+        ${canLink
+          ? `<div class="pc-price-row">
+               <span class="pc-price" style="color:${pi.c}">₹${p.price}</span>
+               ${disc>0?`<span class="pc-mrp">₹${p.mrp}</span><span class="pc-disc">${disc}% off</span>`:''}
+             </div>`
+          : `<div class="pc-no-price">No price available</div>`}
+        ${hasScore ? `
+          <div class="vs-wrap">
+            <div class="vs-row">
+              <span class="vs-label">Value Score</span>
+              <span class="vs-val" style="color:${scColor(sc)}">${sc}<span style="font-size:.6em;opacity:.5">/100</span></span>
+            </div>
+            <div class="vs-track"><div class="vs-fill" data-w="${sc}" style="background:${scColor(sc)}"></div></div>
+            ${tags.length?`<div class="vs-tags">${tags.join('')}</div>`:''}
+          </div>` : ''}
+        <div class="pc-rows">
+          <div class="pc-row"><span class="pc-rl">Status</span><span>${spill}</span></div>
+          ${reason?`<div class="pc-row"><span class="pc-reason">${reason}</span></div>`:''}
+          ${canLink&&p.deliveryMinutes?`<div class="pc-row"><span class="pc-rl">Delivery Time</span><span class="pc-rv">${fmtT(p.deliveryMinutes)}</span></div>`:''}
+          ${canLink?`<div class="pc-row"><span class="pc-rl">Delivery Fee</span><span class="pc-rv">${(p.deliveryFee===0)?'🆓 Free':'₹'+p.deliveryFee}</span></div>`:''}
+          ${canLink&&p.note?`<div class="pc-row"><span class="pc-rl">Note</span><span class="pc-rv" style="color:var(--amber)">${p.note}</span></div>`:''}
+        </div>
+        ${canLink
+          ? `<a class="pc-btn active" href="${pi.url(prodName)}" target="_blank" rel="noopener" style="background:linear-gradient(135deg,${pi.c},${pi.c}bb);color:${tc}">View on ${pi.name} ↗</a>`
+          : `<div class="pc-btn inactive">${p.stock==='not_in_city'||!p.available?`Not Available in ${city}`:p.stock==='out_of_stock'?'Out of Stock':'Not Listed Here'}</div>`}
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // Animate score bars
+  requestAnimationFrame(()=>setTimeout(()=>{
+    document.querySelectorAll('.vs-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w+'%'});
+  }, 120));
+
+  // Savings
+  const tips = data.savingTips||[];
+  const ss = document.getElementById('saveSec');
+  if (tips.length) {
+    document.getElementById('saveGrid').innerHTML = tips.map(t=>`
+      <div class="save-card">
+        <div class="save-emoji">${t.icon||'💡'}</div>
+        <div>
+          <div class="save-name">${t.label}</div>
+          <div class="save-desc">${t.desc}</div>
+          ${t.saving?`<span class="save-amount">${t.saving}</span>`:''}
+        </div>
+      </div>`).join('');
+    ss.style.display='block';
+  } else ss.style.display='none';
+
+  document.getElementById('results').classList.add('on');
+  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),70);
+}
+
+function showErr(msg) {
+  const el = document.getElementById('errBox');
+  el.textContent = msg; el.classList.add('on');
+}
+
+document.addEventListener('keydown', ev=>{if(ev.key==='Enter') run();});
+</script>
+</body>
+</html>
